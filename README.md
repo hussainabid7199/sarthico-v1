@@ -1,16 +1,23 @@
-Developed an innovative app designed to streamline daily maintenance and repair services for households and automobiles. 
-The app connects users with a network of trusted service providers, offering a convenient way to schedule maintenance tasks, 
-track repair progress, and receive updates. Key features include easy booking for home repairs and automobile servicing, real-time notifications, transparent pricing, and a feedback system for quality assurance. 
-The app ensures that users can effortlessly manage their home and vehicle maintenance, 
-improving reliability and efficiency for day-to-day service needs.
+# Maintenance & Repair Services App
 
+This innovative app is designed to streamline daily maintenance and repair services for households and automobiles. It connects users with a network of trusted service providers, offering an efficient way to schedule tasks, track repair progress, and receive real-time updates.
 
+## Key Features
+- **Role-Based Access Control**: Provides authorization and access control for both customers and service providers.
+- **Easy Booking**: Users can schedule home and automobile maintenance services with just a few clicks.
+- **Real-Time Notifications**: Keeps users informed about booking confirmations, service updates, and task completion status.
+- **Transparent Pricing**: Offers clear and upfront pricing for services.
+- **Feedback System**: Enables users to rate service providers and give feedback to maintain high-quality standards.
+- **Service History Tracking**: Allows users to view past services and upcoming maintenance schedules for both homes and vehicles.
+- **Integrated Payment System**: Supports secure transactions with multiple payment options.
+- **Service Provider Dashboard**: Helps providers manage their appointments, availability, and interactions with customers.
 
-:- Developing a system that provides role-based access, control, and authorization for both customers and service providers.
-:- Vision to provide affordable and quality service to customers, while making it easier for service providers to find and connect with customers.
-:- Easy booking process that allows users to schedule home and automobile maintenance services with just a few clicks.
-:- Real-time notifications keep customers informed about booking confirmations, service updates, and completion status.
-:- Feedback system for quality assurance, enabling customers to rate service providers and provide feedback to ensure high standards.
-:- Service history tracking, allowing customers to view past services and upcoming maintenance schedules for both home and vehicles.
-:- Integrated payment system with multiple payment options for secure and hassle-free transactions.
-:- Service provider dashboard that helps providers manage their appointments, availability, and customer interactions more efficiently.
+## Vision
+Our goal is to provide affordable and high-quality services to customers while making it easier for service providers to connect with new clients.
+
+## Tech Stack
+- **Frontend**: React Native / Next Js
+- **Backend**: Node.js with Express
+- **Database**: Mysql
+- **Authentication**: JWT-based role access system
+- **Notifications**: Push notifications using Firebase
