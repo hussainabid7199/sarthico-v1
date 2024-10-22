@@ -2,8 +2,8 @@
 import { Request, Response } from "express";
 import { inject } from "inversify";
 import { controller, httpGet, httpPut, interfaces, request, response } from "inversify-express-utils";
-import { IUserService } from "../interface/IUserService";
-import { TYPES } from "../config/types";
+import { IUserService } from "../services/interface/IUserService";
+import { TYPES } from "../config-ioc/types";
 import { authentication } from "../middleware/authentication.middleware";
 import { authorization } from "../middleware/authorization.middleware";
 import validateSchema from "../middleware/validation.middleware";
@@ -17,6 +17,13 @@ export class UserController implements interfaces.Controller {
   // Inject IUserService instead of UserController
   constructor(@inject(TYPES.IUserService) userService: IUserService) {
     this._userService = userService;
+  }
+
+  @httpGet("/")
+  public get(req: Request, res: Response): void {
+    const userId = req.params.id;
+    const user = this._userService.getUser(userId);
+    res.send(user);
   }
 
   @httpGet("/:id")

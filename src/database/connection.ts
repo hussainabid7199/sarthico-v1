@@ -3,7 +3,7 @@ import { Sequelize } from "sequelize-typescript";
 const fs = require("fs");
 import * as path from "path";
 const caCertPath = path.resolve(__dirname, "ca", "ca.pem");
-
+console.log("process.env.DB_NAME", process.env.DB_NAME)
 const dbConfigSetup = () => {
   const devType: string = process.env.NODE_ENV?.trim() || "local";
   if (devType && devType === "local") {
@@ -60,3 +60,6 @@ const dbConfigSetup = () => {
 const devConnection: any = dbConfigSetup();
 const sequelize = new Sequelize(devConnection);
 export default sequelize;
+
+
+

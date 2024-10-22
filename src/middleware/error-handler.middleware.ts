@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import CustomError from '../exceptions/custom-error';
 import CustomResponse from '../dtos/CustomResponse';
 import PlainDto from '../dtos/PlainDto';
-import IResponseError from '../interface/IResponseError';
+import IResponseError from '../services/interface/IResponseError';
 
 export default function errorHandler(err: any, req: Request, res: Response, next: NextFunction) {
   if (!(err instanceof CustomError)) {

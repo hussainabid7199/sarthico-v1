@@ -11,7 +11,7 @@ import dotenv from "dotenv";
 import ClientIdMiddleware from "./middleware/clientid.middleware";
 import errorHandler from "./middleware/error-handler.middleware";
 import { InversifyExpressServer } from "inversify-express-utils";
-import { container } from "./config/ioc";
+import { container } from "./config-ioc/ioc";
 
 dotenv.config();
 dotenv.config({ path: `.env.${process.env.NODE_ENV?.trim()}` });

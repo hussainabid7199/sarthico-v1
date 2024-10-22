@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import { IUserService } from "../interface/IUserService";
+import { IUserService } from "./interface/IUserService";
 
 @injectable()
 export class UserService implements IUserService {
