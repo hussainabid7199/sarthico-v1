@@ -1,13 +1,15 @@
+import { response } from "inversify-express-utils";
 import { injectable } from "inversify";
 import { IEmailService } from "./interface/IEmailService";
-import EmailOTPDto from "../dtos/EmailDto";
 import EmailOTPModel from "../models/EmailModel";
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
+import emailSignature from "../helpers/Signature";
+import { EmailResponseDto, EmailSignature } from "../dtos/EmailDto";
 
 @injectable()
 export class EmailService implements IEmailService {
-  async sendOTPEmail(model: EmailOTPModel): Promise<any> {
+  async sendOTPEmail(model: EmailOTPModel): Promise<EmailResponseDto> {
     const CLIENT_ID = process.env.EMAIL_CLIENT_ID;
     const CLIENT_SECRET = process.env.EMAIL_CLIENT_SECRET;
     const REDIRECT_URI = process.env.EMAIL_REDIRECT_URI;
@@ -19,7 +21,7 @@ export class EmailService implements IEmailService {
       CLIENT_SECRET,
       REDIRECT_URI
     );
-    
+
     // Set the refresh token
     oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
@@ -33,25 +35,42 @@ export class EmailService implements IEmailService {
         }
 
         const transporter = nodemailer.createTransport({
+          service: "gmail",
           host: EMAIL_HOST,
           port: 465,
           secure: true,
           auth: {
             type: "OAuth2",
-            user: "hussainabid7200@gmail.com",
+            user: "cosarthi@gmail.com",
             clientId: CLIENT_ID,
             clientSecret: CLIENT_SECRET,
             refreshToken: REFRESH_TOKEN,
-            accessToken: token, // Use the retrieved access token
+            accessToken: token,
+          },
+          tls: {
+            rejectUnauthorized: true,
           },
         } as nodemailer.TransportOptions);
 
+        const emailContentData: EmailSignature = {
+          name: "",
+          position: "",
+          contact: "",
+          email: "",
+          companyName: "",
+          address: "",
+          logo: "",
+          message: model.message,
+        };
+
+        const emailContent = emailSignature(emailContentData);
+
         const mailOptions = {
-          from: "hussainabid7200@gmail.com",
+          from: "cosarthi@gmail.com",
           to: model.email,
           subject: model.subject,
           text: model.message,
-          html: model.htmlSignature,
+          html: emailContent,
         };
 
         const result = await transporter.sendMail(mailOptions);
@@ -62,8 +81,16 @@ export class EmailService implements IEmailService {
       }
     }
 
-    sendMail()
-      .then((result) => console.log("Email sent successfully", result))
-      .catch((error) => console.log("Failed to send email:", error.message));
+    try {
+      const result = await sendMail();
+      const emailResponse: EmailResponseDto = {
+        messageId: result.messageId, 
+        status: result.response,
+      };
+      return emailResponse;
+    } catch (error) {
+      console.log("Failed to send email:", error);
+      throw new Error("Email sending failed"); // Optionally throw or handle error appropriately
+    }
   }
 }
