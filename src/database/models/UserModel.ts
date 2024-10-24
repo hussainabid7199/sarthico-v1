@@ -18,6 +18,21 @@ import { RoleModel } from "./RoleModel";
   tableName: "users",
 })
 export class UserModel extends Model {
+
+  userId!: string;
+  firstName!: string;
+  lastName!: string;
+  email!: string;
+  password!: string; 
+  confirmPassword!: string;
+  phone!: string;
+  createdOn!: Date;
+  updatedOn?: Date;
+  isActive!: boolean;
+  isDeleted!: boolean;
+  parentUserId?: string;
+
+
   @Column({
     field: "userId",
     type: DataTypes.UUIDV4,
@@ -39,6 +54,16 @@ export class UserModel extends Model {
     type: DataTypes.STRING(250),
     allowNull: false,
     field: "email",
+  })
+  @Column({
+    type: DataTypes.STRING(20),
+    allowNull: false,
+    field: "password",
+  })
+  @Column({
+    type: DataTypes.STRING(20),
+    allowNull: false,
+    field: "confirmPassword",
   })
   @Column({
     type: DataTypes.STRING(20),
@@ -79,11 +104,11 @@ export class UserModel extends Model {
 
 
   @HasMany(() => UserModel, { as: 'children', foreignKey: 'parentUserId' })
-  childUsers!: UserModel[]; // Ensure alias 'children' does not conflict with any attribute
+  childUsers!: UserModel[];
 
   @HasOne(() => UserModel, { as: 'parent', foreignKey: 'parentUserId' })
-  parentUser!: UserModel; // Ensure alias 'parent' does not conflict with any attribute
+  parentUser!: UserModel; 
 
   @BelongsToMany(() => RoleModel, () => UserRoleMappingModel, 'userId', 'roleId')
-  roles!: RoleModel[];// Ensure alias 'roles' does not conflict with any attribute
+  roles!: RoleModel[];
 }
