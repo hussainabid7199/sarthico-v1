@@ -1,14 +1,15 @@
 export default interface EmailModel {
+    userId?: string;
     email: string;
     cc?: string[];
     bcc?: string[];
-    subject?: string;
+    subject: string;
     message?: string;
 }
 
 export interface EmailOTPModel {
     email: string;
-    subject: string;
+    subject?: string;
     message?: string;
 }
 

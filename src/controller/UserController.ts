@@ -2,7 +2,7 @@
 import { Request, Response } from "express";
 import { inject } from "inversify";
 import { controller, httpGet, interfaces } from "inversify-express-utils";
-import { IUserService } from "../services/interface/IUserService";
+import  IUserService  from "../services/interface/IUserService";
 import { TYPES } from "../config-ioc/types";
 
 @controller("/users")

@@ -12,6 +12,9 @@ import { TYPES } from "../config-ioc/types";
 import IAccountService from "../services/interface/IAccountService";
 import LoginModel from "../models/LoginModel";
 import UserDto from "../dtos/UserDto";
+import config from "../jwt-config";
+import * as jwt from "jsonwebtoken";
+import RoleDto from "../dtos/RoleDto";
 
 @controller("/account")
 export class AccountController implements interfaces.Controller {
@@ -25,18 +28,23 @@ export class AccountController implements interfaces.Controller {
   public async login(
     @request() req: Request,
     @response() res: Response
-  ): Promise<UserDto | undefined> {
+  ): Promise<void> {
     const model: LoginModel = req.body;
     try {
-      return await this._accountService.login(model)
+      const response = await this._accountService.login(model);
+      if (response && response.userId) {
+        res.status(200).send({
+          message: "Login successful!",
+          userId: response.userId
+        });
+      }
     } catch (error) {
-      res.status(500).send({
-        message: "Failed to send OTP email.",
+      res.status(400).send({
+        message: "Try again!",
         error: error,
       });
     }
   }
-
 
   @httpPost("/register")
   public async register(

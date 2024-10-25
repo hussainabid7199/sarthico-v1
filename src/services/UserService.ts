@@ -1,8 +1,8 @@
 import { injectable } from "inversify";
-import { IUserService } from "./interface/IUserService";
+import  IUserService from "./interface/IUserService";
 
 @injectable()
-export class UserService implements IUserService {
+export default class UserService implements IUserService {
   getUser(id: string): string {
     return `User with ID ${id}`;
   }

@@ -9,7 +9,7 @@ import {
   response,
 } from "inversify-express-utils";
 import { TYPES } from "../config-ioc/types";
-import { IEmailService } from "../services/interface/IEmailService";
+import  IEmailService  from "../services/interface/IEmailService";
 import { EmailResponseDto } from "../dtos/EmailDto";
 import EmailModel, { EmailOTPModel } from "../models/EmailModel";
 import { otpSignature } from "../helpers/Signature";
@@ -37,6 +37,7 @@ export class EmailController implements interfaces.Controller {
       const result = this.generateOTP();
       model.message = result;
       model.subject = "Complete Your Verification with OTP:-"
+     
       const signatureResponse = otpSignature(model);
 
       const emailData: EmailModel = {

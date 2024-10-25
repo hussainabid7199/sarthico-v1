@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 const pictureStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (req: any, file: any, cb: any) => {
     let destinationFolder = 'public/uploads';
 
     if (file.fieldname === 'profilePicture') {
@@ -12,7 +12,7 @@ const pictureStorage = multer.diskStorage({
 
     cb(null, destinationFolder);
   },
-  filename: (req, file, cb) => {
+  filename: (req: any, file: any, cb: any) => {
     const originalname = file.originalname;
     const extname = path.extname(originalname);
     const basename = path.basename(originalname, extname);
@@ -44,7 +44,7 @@ const pictureStorage = multer.diskStorage({
 
 const pictureUpload = multer({
   storage: pictureStorage,
-  fileFilter(req, file, callback) {
+  fileFilter(req: any, file: any, callback: any) {
     if (!file.mimetype.startsWith('image/')) {
       callback(null, false);
       return callback(new Error('Only image file is allowed'));
