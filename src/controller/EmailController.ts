@@ -11,7 +11,7 @@ import {
 import { TYPES } from "../config-ioc/types";
 import  IEmailService  from "../services/interface/IEmailService";
 import { EmailResponseDto } from "../dtos/EmailDto";
-import EmailModel, { EmailOTPModel } from "../models/EmailModel";
+import EmailModel, { EmailOTPModel } from "../models/EmailDataModel";
 import { otpSignature } from "../helpers/Signature";
 
 @controller("/email")

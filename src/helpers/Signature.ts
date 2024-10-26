@@ -1,5 +1,5 @@
 import { EmailSignature } from "../dtos/EmailDto";
-import { EmailOTPModel } from "../models/EmailModel";
+import { EmailOTPModel } from "../models/EmailDataModel";
 
 const emailSignature = (item?: EmailSignature) => {
   return `

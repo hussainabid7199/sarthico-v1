@@ -4,11 +4,16 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("roles", {
-      roleId: {
+      uniqueId: {
         type: Sequelize.UUID,
         allowNull: false,
-        primaryKey: true,
         defaultValue: Sequelize.UUIDV4,
+      },
+      roleId: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
       },
       roleName: {
         type: Sequelize.STRING(36),
@@ -23,15 +28,18 @@ module.exports = {
 
     await queryInterface.bulkInsert("roles", [
       {
-        roleId: "2c5e174e-3b0e-446f-86af-483d56fd7210",
+        uniqueId: "86274be1fdb869ab18e80bfb48a118", 
+        roleId: 1, 
         roleName: "Administrator",
       },
       {
-        roleId: "748424A0-0288-499B-839D-F1F99A7F870D",
+        uniqueId: "d49854aeb7c34472e5e79e1019f826", 
+        roleId: 2, 
         roleName: "User",
       },
       {
-        roleId: "b0e-44174e-3483d5af-86fd66f-86fd7210",
+        uniqueId: "27e21322b726d654e47eb419d5882d", 
+        roleId: 3, 
         roleName: "Technician",
       },
     ]);
@@ -41,10 +49,15 @@ module.exports = {
     await queryInterface.bulkDelete(
       "roles",
       {
-        role_id: [
-          "2c5e174e-3b0e-446f-86af-483d56fd7210",
-          "748424A0-0288-499B-839D-F1F99A7F870D",
-          "b0e-44174e-3483d5af-86fd66f-86fd7210",
+        uniqueId: [
+          "86274be1fdb869ab18e80bfb48a118",
+          "d49854aeb7c34472e5e79e1019f826",
+          "27e21322b726d654e47eb419d5882d",
+        ],
+        roleId: [
+          1,
+          2,
+          3,
         ],
       },
       {}

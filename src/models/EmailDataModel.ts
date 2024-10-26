@@ -1,4 +1,4 @@
-export default interface EmailModel {
+export default interface EmailDataModel {
     userId?: string;
     email: string;
     cc?: string[];

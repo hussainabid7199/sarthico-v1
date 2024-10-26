@@ -1,6 +1,6 @@
 import RoleDto from "../dtos/RoleDto";
 
-export default interface UserModel {
+export default interface UserDataModel {
   firstName: string;
   lastName: string;
   password: string;

@@ -13,8 +13,7 @@ export const authorization = (roles: Array<Roles>) => {
       // Find the user with the requested ID.
       const userId = (req as CustomRequest).token.payload.userId || '';
 
-      const user = await UserModel.findOne({
-        include: RoleModel,
+      const user = await RoleModel.findOne({
         where: {
           userId: userId,
           isActive: true,
@@ -27,13 +26,13 @@ export const authorization = (roles: Array<Roles>) => {
         throw new NotFoundError('User not found');
       }
 
-      const hasMatchingRole = user.roles.map((role) => role.toJSON()).some((role) => roles.includes(role.roleName));
+      // const hasMatchingRole = user.roles.map((role) => role.toJSON()).some((role) => roles.includes(role.roleName));
 
-      if (hasMatchingRole) {
-        next();
-      } else {
-        throw new ForbiddenError('Not enough permissions');
-      }
+      // if (hasMatchingRole) {
+      //   next();
+      // } else {
+      //   throw new ForbiddenError('Not enough permissions');
+      // }
     } catch (error) {
       if (error instanceof NotFoundError || error instanceof ForbiddenError) {
         res.status(error.status).json({ message: error.message });

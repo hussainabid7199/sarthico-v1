@@ -4,11 +4,21 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.createTable('users', {
-      userId: {
+      uniqueId: {
         type: Sequelize.UUID,
         allowNull: false,
-        primaryKey: true,
         defaultValue: Sequelize.UUIDV4,
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+      },
+      roleId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 2
       },
       firstName: {
         type: Sequelize.STRING(50),
@@ -23,7 +33,7 @@ module.exports = {
         allowNull: false,
       },
       password: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       phone: {
@@ -47,16 +57,8 @@ module.exports = {
       },
       isDeleted: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
-      parentUserId: {
-        type: Sequelize.UUID,
         allowNull: true,
-        references: {
-          model: 'users',
-          key: 'userId',
-        },
+        defaultValue: true,
       },
     });
   },

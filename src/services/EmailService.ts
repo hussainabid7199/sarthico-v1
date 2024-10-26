@@ -1,10 +1,10 @@
 import { injectable } from "inversify";
 import  IEmailService  from "./interface/IEmailService";
-import { EmailOption } from "../models/EmailModel";
+import { EmailOption } from "../models/EmailDataModel";
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
 import { EmailResponseDto } from "../dtos/EmailDto";
-import EmailModel from "../models/EmailModel";
+import EmailModel from "../models/EmailDataModel";
 
 @injectable()
 export default class EmailService implements IEmailService {

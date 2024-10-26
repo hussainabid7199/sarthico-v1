@@ -1,4 +1,4 @@
-import LoginModel from "../../models/LoginModel";
+import LoginModel from "../../models/LoginDataModel";
 import UserDto from "../../dtos/UserDto";
 import { UserModel } from "../../database/models/UserModel";
 
