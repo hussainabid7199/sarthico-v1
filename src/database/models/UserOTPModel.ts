@@ -15,7 +15,7 @@ import { UserModel } from "./UserModel";
 })
 export default class UserOTPModel extends Model {
   @Column({
-    type: DataTypes.UUIDV4,
+    type: DataTypes.UUID,
     allowNull: false,
     primaryKey: true,
   })
