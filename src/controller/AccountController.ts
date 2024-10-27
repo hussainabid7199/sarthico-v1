@@ -52,7 +52,7 @@ export class AccountController implements interfaces.Controller {
   public async register(
     @request() req: Request,
     @response() res: Response
-  ): Promise<UserDto | undefined> {
+  ): Promise<UserDto | void> {
     const t = await sequelize.transaction();
     try {
       const model = req.body as UserModel;
@@ -65,11 +65,19 @@ export class AccountController implements interfaces.Controller {
       });
 
       if (existingUser) {
-        throw new Error("Username already taken");
+        res.status(400).json({
+          success: false,
+          message: "Username already taken",
+        });
+        return;
       }
 
-      if(model.password !== confirmPassword){
-        throw new Error("Invalid username or password");
+      if (model.password !== confirmPassword) {
+        res.status(400).json({
+          success: false,
+          message: "Invalid username or password",
+        });
+        return;
       }
 
       const result = await sequelize.query(
@@ -80,34 +88,27 @@ export class AccountController implements interfaces.Controller {
         }
       );
 
-      const roleId: number = (result[0] as unknown as { roleId: number })
-        ?.roleId || 0;
+      const roleId: number =
+        (result[0] as unknown as { roleId: number })?.roleId || 0;
 
       model.password = await BcryptUtils.hashPassword(model.password);
       model.isActive = true;
       model.roleId = roleId;
 
-      // Create the user with a transaction
       const userResponse = await UserModel.create(model as any, {
         transaction: t,
+        raw: true,
       });
 
-      const response: UserDto = {
-        userId: userResponse.userId,
-        firstName: userResponse.firstName,
-        lastName: userResponse.lastName,
-        email: userResponse.email,
-        phone: userResponse.phone,
-        isActive: userResponse.isActive,
-      };
+      const { token, ...response }: UserDto = userResponse.dataValues;
 
       await t.commit();
-      return response;
+      res.status(201).json(response);
     } catch (error) {
       await t.rollback();
       res.status(400).json({
         success: false,
-        message: "Registration unsuccessful!",
+        message: "Some error occurred!",
         error: error,
       });
     }

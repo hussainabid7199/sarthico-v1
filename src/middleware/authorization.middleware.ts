@@ -1,10 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { CustomRequest } from './authentication.middleware';
 import { Roles } from '../enums/role.enum';
-import { Op } from 'sequelize';
 import NotFoundError from '../exceptions/not-found-error';
 import ForbiddenError from '../exceptions/forbidden-error';
-import { UserModel } from '../database/models/UserModel';
 import { RoleModel } from '../database/models/RoleModel';
 
 export const authorization = (roles: Array<Roles>) => {
@@ -27,7 +25,7 @@ export const authorization = (roles: Array<Roles>) => {
       }
       
       const hasMatchingRole = roles.includes(rolesResponse?.roleName as Roles);
-      
+
       if (hasMatchingRole) {
         next();
       } else {
