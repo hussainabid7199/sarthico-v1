@@ -4,45 +4,33 @@ import {
   Table,
   Model,
   Column,
-  DataType,
   ForeignKey,
-  HasMany,
-  HasOne,
-  BelongsToMany,
-  Sequelize,
+  BelongsTo,
 } from "sequelize-typescript";
+import { UserModel } from "./UserModel";
 
 @Table({
   timestamps: false,
-  tableName: "roles",
+  tableName: "users_otp",
 })
-export class RoleModel extends Model {
+export default class UserOTPModel extends Model {
   @Column({
     type: DataTypes.UUID,
     allowNull: false,
-    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
   })
   uniqueId!: string;
 
   @Column({
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
+    type: DataTypes.STRING(50),
     allowNull: false,
   })
-  roleId!: number;
+  otp!: string;
 
-  @Column({
-    type: DataTypes.STRING(36),
-    allowNull: false,
-    field: "roleName",
-  })
-  roleName!: string;
   @Column({
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW,
-    field: "createdOn",
   })
   createdOn!: Date;
 }

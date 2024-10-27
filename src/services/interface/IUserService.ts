@@ -1,5 +1,5 @@
 import UserDto from "../../dtos/UserDto";
 
-export interface IUserService {
+export default interface IUserService {
   getUser(id: string): string;
 }
