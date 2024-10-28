@@ -58,12 +58,12 @@ module.exports = {
       isDeleted: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
-        defaultValue: true,
+        defaultValue: false,
       },
     });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down (queryInterface) {
     await queryInterface.dropTable('users');
   }
 };

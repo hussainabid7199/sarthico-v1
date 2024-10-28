@@ -5,4 +5,5 @@ export const TYPES = {
   IAccountService: Symbol.for("IAccountService"),
   IMiscellaneousService: Symbol.for("IMiscellaneousService"),
   IVerifyOTPService: Symbol.for("IVerifyOTPService"),
+  IServiceService: Symbol.for("IServiceService"),
 };

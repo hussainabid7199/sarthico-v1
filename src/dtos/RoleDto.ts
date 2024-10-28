@@ -1,4 +1,4 @@
 export default interface RoleDto {
-  id: string;
+  id?: string;
   name: string;
 }

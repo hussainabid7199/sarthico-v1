@@ -1,5 +1,8 @@
-export default interface Response<T>{
-    message: string,
-    statusCode: number,
-    data: T
-}
+export default interface Response<T> {
+    success: boolean;
+    errors?: string[];
+    message?: string;
+    errorCode?: string;
+    data?: T;
+  }
+  
