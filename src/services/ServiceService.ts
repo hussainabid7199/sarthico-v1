@@ -78,7 +78,7 @@ export default class ServiceService implements IServiceService {
         transaction: t,
         attributes: ["uniqueId", "serviceId", "serviceName"],
         order: [["serviceId", "ASC"]],
-        raw: true
+        raw: true,
       });
 
       const serviceResponse = {
