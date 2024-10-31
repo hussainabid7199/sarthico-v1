@@ -4,7 +4,7 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.createTable('service', {
-      userServiceId: {
+      serviceId: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
@@ -15,12 +15,8 @@ module.exports = {
         allowNull: false,
         defaultValue: Sequelize.UUIDV4,
       },
-      userId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      serviceId: {
-        type: Sequelize.INTEGER,
+      serviceName: {
+        type: Sequelize.STRING(50),
         allowNull: false,
       },
       createdOn: {
@@ -29,9 +25,9 @@ module.exports = {
         allowNull: false,
       },
       updatedOn: {
-        type: Sequelize.DataTypes.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        type: Sequelize.DATE,
         allowNull: true,
+        defaultValue: Sequelize.NOW,
       },
       isActive: {
         type: Sequelize.BOOLEAN,
