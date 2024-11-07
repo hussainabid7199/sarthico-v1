@@ -3,8 +3,8 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('service', {
-      serviceId: {
+    await queryInterface.createTable('user_service_mappings', {
+      userServiceId: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
@@ -15,8 +15,12 @@ module.exports = {
         allowNull: false,
         defaultValue: Sequelize.UUIDV4,
       },
-      serviceName: {
-        type: Sequelize.STRING(50),
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      serviceId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       createdOn: {
@@ -25,9 +29,9 @@ module.exports = {
         allowNull: false,
       },
       updatedOn: {
-        type: Sequelize.DATE,
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: true,
-        defaultValue: Sequelize.NOW,
       },
       isActive: {
         type: Sequelize.BOOLEAN,
@@ -42,9 +46,7 @@ module.exports = {
     });
   },
 
-  async down (queryInterface, Sequelize) {
-
-     await queryInterface.dropTable('users');
-
+  async down (queryInterface) {
+    await queryInterface.dropTable('user_service_mappings');
   }
 };

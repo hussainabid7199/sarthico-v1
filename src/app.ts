@@ -69,5 +69,5 @@ app.listen(port || 3002, async () => {
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
-  console.log("server is running on port " + port);
+  console.log("Server is running on port " + port);
 });

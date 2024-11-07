@@ -4,7 +4,7 @@ import { Table, Model, Column } from "sequelize-typescript";
 
 @Table({
   timestamps: false,
-  tableName: "users_service",
+  tableName: "user_service_mappings",
 })
 export class UserServiceModel extends Model {
   @Column({

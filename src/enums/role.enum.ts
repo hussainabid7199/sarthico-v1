@@ -3,5 +3,5 @@ export enum Roles {
   Administrator = 'Administrator',
   Manager = 'Manager',
   User = 'User',
-  Editor = 'Editor',
+  ServiceProvider = 'ServiceProvider',
 }
