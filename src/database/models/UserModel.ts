@@ -1,17 +1,10 @@
-"use-strict"
+"use strict";
 import { DataTypes } from "sequelize";
 import {
   Table,
   Model,
   Column,
-  DataType,
-  ForeignKey,
-  HasMany,
-  HasOne,
-  BelongsToMany,
 } from "sequelize-typescript";
-import { UserRoleMappingModel } from "./UserRoleMappingModel";
-import { RoleModel } from "./RoleModel";
 
 @Table({
   timestamps: false,
@@ -19,71 +12,82 @@ import { RoleModel } from "./RoleModel";
 })
 export class UserModel extends Model {
   @Column({
-    field: "userId",
-    type: DataTypes.UUIDV4,
-    primaryKey: true,
+    type: DataTypes.UUID,
     allowNull: false,
     defaultValue: DataTypes.UUIDV4,
   })
+  uniqueId!: string;
+
+  @Column({
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    allowNull: false,
+  })
+  userId!: number;
+
+  @Column({
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 2,
+  })
+  roleId!: number;
+
   @Column({
     type: DataTypes.STRING(50),
     allowNull: false,
-    field: "firstName",
   })
+  firstName!: string;
+
   @Column({
     type: DataTypes.STRING(50),
     allowNull: false,
-    field: "lastName",
   })
+  lastName!: string;
+
   @Column({
     type: DataTypes.STRING(250),
     allowNull: false,
-    field: "email",
   })
+  email!: string;
+
+  @Column({
+    type: DataTypes.STRING,
+    allowNull: false,
+  })
+  password!: string;
+
   @Column({
     type: DataTypes.STRING(20),
     allowNull: false,
-    field: "phone",
   })
+  phone!: string;
+
   @Column({
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW,
-    field: "createdOn",
   })
+  createdOn!: Date;
+
   @Column({
     type: DataTypes.DATE,
     allowNull: true,
     defaultValue: DataTypes.NOW,
-    field: "updatedOn",
   })
+  updatedOn?: Date;
+
   @Column({
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: true,
-    field: "isActive",
   })
+  isActive!: boolean;
+
   @Column({
     type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-    field: "isDeleted",
-  })
-  @ForeignKey(() => UserModel)
-  @Column({
-    type: DataType.STRING,
-    field: "parentUserId",
     allowNull: true,
+    defaultValue: false,
   })
-
-
-
-  @HasMany(() => UserModel, { as: 'children', foreignKey: 'parentUserId' })
-  childUsers!: UserModel[]; // Ensure alias 'children' does not conflict with any attribute
-
-  @HasOne(() => UserModel, { as: 'parent', foreignKey: 'parentUserId' })
-  parentUser!: UserModel; // Ensure alias 'parent' does not conflict with any attribute
-
-  @BelongsToMany(() => RoleModel, () => UserRoleMappingModel, 'userId', 'roleId')
-  roles!: RoleModel[];// Ensure alias 'roles' does not conflict with any attribute
+  isDeleted!: boolean;
 }

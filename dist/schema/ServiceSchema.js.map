@@ -1,0 +1,1 @@
+{"version":3,"file":"ServiceSchema.js","sourceRoot":"","sources":["../../src/schema/ServiceSchema.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;AAAA,yCAA2B;AAG3B,MAAM,aAAa,GAAuC,GAAG,CAAC,MAAM,EAAE,CAAC,KAAK,CAAC;IACzE,WAAW,EAAE,GAAG,CAAC,MAAM,EAAE,CAAC,QAAQ,CAAC,2BAA2B,CAAC;CAClE,CAAC,CAAC;AAEH,kBAAe,aAAa,CAAC"}

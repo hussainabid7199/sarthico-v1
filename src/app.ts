@@ -54,8 +54,8 @@ server.setConfig((app) => {
 
 server.setErrorConfig((app) => {
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error(err.stack); // Logs the error stack
-    res.status(500).send("Something went wrong!"); // Respond with a 500 status
+    console.error(err.stack); 
+    res.status(500).send({error: err.message, success: false}); 
   });
 });
 
@@ -69,5 +69,5 @@ app.listen(port || 3002, async () => {
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
-  console.log("server is running on port " + port);
+  console.log("Server is running on port " + port);
 });

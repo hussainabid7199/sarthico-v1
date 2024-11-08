@@ -1,33 +1,30 @@
 import { Request, Response, NextFunction } from 'express';
 import { CustomRequest } from './authentication.middleware';
 import { Roles } from '../enums/role.enum';
-import { Op } from 'sequelize';
 import NotFoundError from '../exceptions/not-found-error';
 import ForbiddenError from '../exceptions/forbidden-error';
-import { UserModel } from '../database/models/UserModel';
 import { RoleModel } from '../database/models/RoleModel';
 
 export const authorization = (roles: Array<Roles>) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       // Find the user with the requested ID.
-      const userId = (req as CustomRequest).token.payload.userId || '';
+      const uniqueId = (req as CustomRequest).token.payload.roleUniqueId || '';
+      const isActive = (req as CustomRequest).token.payload.user.isActive || false;
 
-      const user = await UserModel.findOne({
-        include: RoleModel,
+      const rolesResponse = await RoleModel.findOne({
         where: {
-          userId: userId,
-          isActive: true,
-          [Op.or]: [{ isDelete: null }, { isDelete: false }],
+          uniqueId: uniqueId,
         },
+        raw: true,
       });
 
       // Ensure we found a user.
-      if (!user) {
+      if (!isActive) {
         throw new NotFoundError('User not found');
       }
-
-      const hasMatchingRole = user.roles.map((role) => role.toJSON()).some((role) => roles.includes(role.roleName));
+      
+      const hasMatchingRole = roles.includes(rolesResponse?.roleName as Roles);
 
       if (hasMatchingRole) {
         next();

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Schema } from 'yup';
-import CustomResponse from '../dtos/CustomResponse';
+import CustomResponse from '../dtos/Response';
 import PlainDto from '../dtos/PlainDto';
 import CustomError from '../exceptions/custom-error';
 

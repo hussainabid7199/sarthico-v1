@@ -2,6 +2,9 @@
 import { Sequelize } from "sequelize-typescript";
 const fs = require("fs");
 import * as path from "path";
+const dotenv = require('dotenv');
+dotenv.config();
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 const caCertPath = path.resolve(__dirname, "ca", "ca.pem");
 console.log("process.env.DB_NAME", process.env.DB_NAME)
 const dbConfigSetup = () => {

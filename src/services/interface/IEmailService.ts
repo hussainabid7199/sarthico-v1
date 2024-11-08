@@ -1,6 +1,8 @@
 import { EmailResponseDto } from "../../dtos/EmailDto";
-import EmailOTPModel from "../../models/EmailModel";
+import EmailModel from "../../models/EmailDataModel";
 
-export interface IEmailService {
-  sendOTPEmail(model: EmailOTPModel): Promise<EmailResponseDto>;
+export default interface IEmailService {
+  sendEmail(model: EmailModel): Promise<EmailResponseDto>;
 }
+
+
