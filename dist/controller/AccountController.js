@@ -34,10 +34,15 @@ let AccountController = class AccountController {
         try {
             const response = await this._accountService.login(model);
             if (response && response.uniqueId) {
-                res.status(200).send({
+                const successResponse = {
+                    success: true,
                     message: "Login successful!",
-                    userId: response.uniqueId,
-                });
+                    data: {
+                        userId: response.uniqueId,
+                        message: "Verify your account.",
+                    },
+                };
+                res.status(200).send(successResponse);
             }
         }
         catch (error) {
