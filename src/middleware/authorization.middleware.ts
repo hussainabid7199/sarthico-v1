@@ -10,7 +10,7 @@ export const authorization = (roles: Array<Roles>) => {
     try {
       // Find the user with the requested ID.
       const uniqueId = (req as CustomRequest).token.payload.roleUniqueId || '';
-      const isActive = (req as CustomRequest).token.payload.isActive || false;
+      const isActive = (req as CustomRequest).token.payload.user.isActive || false;
 
       const rolesResponse = await RoleModel.findOne({
         where: {
