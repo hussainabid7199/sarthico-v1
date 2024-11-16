@@ -33,16 +33,12 @@ let AccountController = class AccountController {
         const model = req.body;
         try {
             const response = await this._accountService.login(model);
-            if (response && response.data?.uniqueId) {
-                const successResponse = {
+            if (response && response.data) {
+                res.status(200).send({
                     success: true,
                     message: "Login successful!",
-                    data: {
-                        userId: response.data.uniqueId,
-                        message: "Verify your account.",
-                    },
-                };
-                res.status(200).send(successResponse);
+                    data: response.data
+                });
             }
         }
         catch (error) {
