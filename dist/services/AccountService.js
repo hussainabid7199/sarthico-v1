@@ -22,6 +22,7 @@ const types_1 = require("../config-ioc/types");
 const Signature_1 = require("../helpers/Signature");
 const connection_1 = __importDefault(require("../database/connection"));
 const UserOTPModel_1 = __importDefault(require("../database/models/UserOTPModel"));
+const RoleModel_1 = require("../database/models/RoleModel");
 let AccountService = class AccountService {
     _miscellaneousService;
     _emailService;
@@ -50,57 +51,90 @@ let AccountService = class AccountService {
             if (!isPasswordValid) {
                 throw new Error("Invalid username or password");
             }
-            const otpResponse = this._miscellaneousService.generateOTP();
-            if (otpResponse) {
-                const _model = {
-                    email: model.username,
-                    message: otpResponse,
-                };
-                const signatureResponse = (0, Signature_1.otpSignature)(_model);
-                const emailData = {
-                    email: model.username,
-                    subject: "Complete Your Verification with OTP:-",
-                    message: signatureResponse,
-                };
-                const otpData = {
-                    uniqueId: _user.uniqueId,
-                    otp: otpResponse,
-                    createdOn: new Date(),
-                };
-                const _userOTPResponse = await UserOTPModel_1.default.findOne({
-                    where: {
+            if (_user.is2FA) {
+                const otpResponse = this._miscellaneousService.generateOTP();
+                if (otpResponse) {
+                    const _model = {
+                        email: model.username,
+                        message: otpResponse,
+                    };
+                    const signatureResponse = (0, Signature_1.otpSignature)(_model);
+                    const emailData = {
+                        email: model.username,
+                        subject: "Complete Your Verification with OTP:-",
+                        message: signatureResponse,
+                    };
+                    const otpData = {
                         uniqueId: _user.uniqueId,
+                        otp: otpResponse,
+                        createdOn: new Date(),
+                    };
+                    const _userOTPResponse = await UserOTPModel_1.default.findOne({
+                        where: {
+                            uniqueId: _user.uniqueId,
+                        },
+                        raw: true,
+                    });
+                    if (_userOTPResponse &&
+                        _userOTPResponse.otp &&
+                        _userOTPResponse.createdOn) {
+                        await UserOTPModel_1.default.update(otpData, {
+                            where: { uniqueId: otpData.uniqueId },
+                            transaction: t,
+                        });
+                    }
+                    else {
+                        !_userOTPResponse &&
+                            (await UserOTPModel_1.default.create(otpData, {
+                                transaction: t,
+                            }));
+                    }
+                    const emailResponse = await this._emailService.sendEmail(emailData);
+                    if (!emailResponse) {
+                        throw new Error("Some error occurred!");
+                    }
+                    await t.commit();
+                    if (_user.uniqueId) {
+                        return {
+                            success: true,
+                            data: {
+                                uniqueId: _user.uniqueId,
+                            },
+                        };
+                    }
+                    else {
+                        return {
+                            success: false,
+                            message: "Some error occured",
+                        };
+                    }
+                }
+            }
+            else {
+                await t.rollback();
+                const roleResponse = await RoleModel_1.RoleModel.findOne({
+                    where: {
+                        roleId: _user?.roleId,
                     },
                     raw: true,
                 });
-                if (_userOTPResponse &&
-                    _userOTPResponse.otp &&
-                    _userOTPResponse.createdOn) {
-                    await UserOTPModel_1.default.update(otpData, {
-                        where: { uniqueId: otpData.uniqueId },
-                        transaction: t,
-                    });
+                if (!roleResponse) {
+                    throw new Error("Invalid role!");
                 }
-                else {
-                    !_userOTPResponse &&
-                        (await UserOTPModel_1.default.create(otpData, {
-                            transaction: t,
-                        }));
+                const tokenResponse = await this._miscellaneousService.generateToken(_user, roleResponse);
+                if (tokenResponse && tokenResponse.data && tokenResponse.success) {
+                    return tokenResponse;
                 }
-                const emailResponse = await this._emailService.sendEmail(emailData);
-                if (!emailResponse) {
-                    throw new Error("Some error occurred!");
-                }
-                await t.commit();
             }
-            return {
-                uniqueId: _user.uniqueId,
-            };
         }
         catch (error) {
             await t.rollback();
             throw new Error("Some error occurred!");
         }
+        return {
+            success: false,
+            message: "Unexpected error: operation did not complete",
+        };
     }
     register(model) {
         throw new Error("Method not implemented.");

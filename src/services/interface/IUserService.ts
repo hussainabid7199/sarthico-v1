@@ -1,5 +1,7 @@
 import UserDto from "../../dtos/UserDto";
+import Response from "../../dtos/Response";
 
 export default interface IUserService {
-  getUser(id: string): string;
+  get(): Promise<Response<UserDto[]>>;
+  getById(id: string): Promise<Response<UserDto>>;
 }

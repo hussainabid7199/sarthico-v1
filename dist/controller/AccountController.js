@@ -33,10 +33,10 @@ let AccountController = class AccountController {
         const model = req.body;
         try {
             const response = await this._accountService.login(model);
-            if (response && response.uniqueId) {
+            if (response && response.data?.uniqueId) {
                 res.status(200).send({
                     message: "Login successful!",
-                    userId: response.uniqueId,
+                    data: response.data,
                 });
             }
         }

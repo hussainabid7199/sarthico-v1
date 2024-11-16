@@ -25,6 +25,7 @@ let UserModel = class UserModel extends sequelize_typescript_1.Model {
     updatedOn;
     isActive;
     isDeleted;
+    is2FA;
 };
 exports.UserModel = UserModel;
 __decorate([
@@ -119,6 +120,13 @@ __decorate([
     }),
     __metadata("design:type", Boolean)
 ], UserModel.prototype, "isDeleted", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_1.DataTypes.BOOLEAN,
+        defaultValue: false,
+    }),
+    __metadata("design:type", Boolean)
+], UserModel.prototype, "is2FA", void 0);
 exports.UserModel = UserModel = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: false,

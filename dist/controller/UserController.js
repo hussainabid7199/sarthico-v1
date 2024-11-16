@@ -17,32 +17,40 @@ exports.UserController = void 0;
 const inversify_1 = require("inversify");
 const inversify_express_utils_1 = require("inversify-express-utils");
 const types_1 = require("../config-ioc/types");
+const authentication_middleware_1 = require("../middleware/authentication.middleware");
+const authorization_middleware_1 = require("../middleware/authorization.middleware");
+const role_enum_1 = require("../enums/role.enum");
 let UserController = class UserController {
     _userService;
-    // Inject IUserService instead of UserController
     constructor(userService) {
         this._userService = userService;
     }
-    get(req, res) {
-        const userId = req.params.id;
-        const user = this._userService.getUser(userId);
-        res.send(user);
+    async get(req, res) {
+        const response = await this._userService.get();
+        if (response && response.data && response.success) {
+            return res.status(200).json(response);
+        }
+        else {
+            return res
+                .status(400)
+                .json({ success: false, message: "Failed to retrieve users." });
+        }
     }
     getUser(req, res) {
         const userId = req.params.id;
-        const user = this._userService.getUser(userId);
+        const user = this._userService.getById(userId);
         res.send(user);
     }
 };
 exports.UserController = UserController;
 __decorate([
-    (0, inversify_express_utils_1.httpGet)("/"),
+    (0, inversify_express_utils_1.httpGet)("/", authentication_middleware_1.authentication, (0, authorization_middleware_1.authorization)([role_enum_1.Roles.Administrator])),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], UserController.prototype, "get", null);
 __decorate([
-    (0, inversify_express_utils_1.httpGet)("/:id"),
+    (0, inversify_express_utils_1.httpGet)("/:id", authentication_middleware_1.authentication, (0, authorization_middleware_1.authorization)([role_enum_1.Roles.Administrator])),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)

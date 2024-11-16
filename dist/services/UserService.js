@@ -7,9 +7,61 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
+const UserModel_1 = require("../database/models/UserModel");
 let UserService = class UserService {
-    getUser(id) {
-        return `User with ID ${id}`;
+    async get() {
+        const response = await UserModel_1.UserModel.findAll({
+            attributes: [
+                "uniqueId",
+                "firstName",
+                "lastName",
+                "email",
+                "phone",
+            ],
+            raw: true
+        });
+        if (response && response.length > 0 && response) {
+            return {
+                success: true,
+                data: response,
+            };
+        }
+        else {
+            return {
+                success: false,
+                data: [],
+            };
+        }
+    }
+    async getById(id) {
+        const response = await UserModel_1.UserModel.findOne({
+            where: {
+                id,
+                isActive: true,
+                isDeleted: false
+            },
+            attributes: [
+                "userId",
+                "uniqueId",
+                "firstName",
+                "lastName",
+                "email",
+                "phone",
+            ],
+            raw: true
+        });
+        if (response) {
+            return {
+                success: true,
+                data: response,
+            };
+        }
+        else {
+            return {
+                success: false,
+                message: "User don't exist!"
+            };
+        }
     }
 };
 UserService = __decorate([
