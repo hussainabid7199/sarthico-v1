@@ -16,7 +16,9 @@ import sequelize from "../database/connection";
 import { UserModel } from "../database/models/UserModel";
 import BcryptUtils from "../utils/bcrypt.utils";
 import { RoleModel } from "../database/models/RoleModel";
+import LoginDto from "../dtos/LoginDto";
 const { QueryTypes } = require("sequelize");
+import LoginResponse from "../dtos/Response";
 
 @controller("/account")
 export class AccountController implements interfaces.Controller {
@@ -34,11 +36,17 @@ export class AccountController implements interfaces.Controller {
     const model: LoginModel = req.body;
     try {
       const response = await this._accountService.login(model);
-      if (response && response.data?.uniqueId) {
-        res.status(200).send({
+
+      if (response && response.uniqueId) {
+        const successResponse: LoginResponse<LoginDto> = {
+          success: true,
           message: "Login successful!",
-          data: response.data,
-        });
+          data: {
+            userId: response.uniqueId,
+            message: "Verify your account.",
+          },
+        };
+        res.status(200).send(successResponse);
       }
     } catch (error) {
       res.status(400).send({

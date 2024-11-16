@@ -51,7 +51,7 @@ const dbConfigSetup = () => {
           require: true,
           rejectUnauthorized: true,
         },
-        connectTimeout: 100,
+        connectTimeout: 60000,
       },
       logging: false,
     };
