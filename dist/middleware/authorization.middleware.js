@@ -6,24 +6,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authorization = void 0;
 const not_found_error_1 = __importDefault(require("../exceptions/not-found-error"));
 const forbidden_error_1 = __importDefault(require("../exceptions/forbidden-error"));
-const RoleModel_1 = require("../database/models/RoleModel");
 const authorization = (roles) => {
     return async (req, res, next) => {
         try {
             // Find the user with the requested ID.
-            const uniqueId = req.token.payload.roleUniqueId || '';
+            const roleName = req.token.payload.roleName || '';
             const isActive = req.token.payload.user.isActive || false;
-            const rolesResponse = await RoleModel_1.RoleModel.findOne({
-                where: {
-                    uniqueId: uniqueId,
-                },
-                raw: true,
-            });
+            console.log("roleName", roleName);
+            // const rolesResponse = await RoleModel.findOne({
+            //   where: {
+            //     uniqueId: uniqueId,
+            //   },
+            //   raw: true,
+            // });
             // Ensure we found a user.
             if (!isActive) {
                 throw new not_found_error_1.default('User not found');
             }
-            const hasMatchingRole = roles.includes(rolesResponse?.roleName);
+            const hasMatchingRole = roles.includes(roleName);
             if (hasMatchingRole) {
                 next();
             }
