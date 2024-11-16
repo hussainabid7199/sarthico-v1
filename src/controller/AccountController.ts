@@ -36,6 +36,7 @@ export class AccountController implements interfaces.Controller {
     const model: LoginModel = req.body;
     try {
       const response = await this._accountService.login(model);
+
       if (response && response.uniqueId) {
         const successResponse: LoginResponse<LoginDto> = {
           success: true,

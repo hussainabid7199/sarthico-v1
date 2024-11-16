@@ -90,4 +90,10 @@ export class UserModel extends Model {
     defaultValue: false,
   })
   isDeleted!: boolean;
+
+  @Column({
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  })
+  is2FA!: boolean;
 }

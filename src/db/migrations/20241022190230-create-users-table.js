@@ -60,6 +60,10 @@ module.exports = {
         allowNull: true,
         defaultValue: false,
       },
+      is2FA: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
     });
   },
 
