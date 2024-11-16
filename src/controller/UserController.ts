@@ -1,30 +1,38 @@
-"use-strict"
+"use-strict";
 import { Request, Response } from "express";
 import { inject } from "inversify";
 import { controller, httpGet, interfaces } from "inversify-express-utils";
-import  IUserService  from "../services/interface/IUserService";
+import IUserService from "../services/interface/IUserService";
 import { TYPES } from "../config-ioc/types";
+import UserDto from "../dtos/UserDto";
+import { authentication } from "../middleware/authentication.middleware";
+import { authorization } from "../middleware/authorization.middleware";
+import { Roles } from "../enums/role.enum";
 
 @controller("/users")
 export class UserController implements interfaces.Controller {
   private readonly _userService: IUserService;
 
-  // Inject IUserService instead of UserController
   constructor(@inject(TYPES.IUserService) userService: IUserService) {
     this._userService = userService;
   }
 
-  @httpGet("/")
-  public get(req: Request, res: Response): void {
-    const userId = req.params.id;
-    const user = this._userService.getUser(userId);
-    res.send(user);
+  @httpGet("/", authentication, authorization([Roles.Administrator]))
+  public async get(req: Request, res: Response): Promise<Response<UserDto[]>> {
+    const response = await this._userService.get();
+    if (response && response.data && response.success) {
+      return res.status(200).json(response);
+    } else {
+      return res
+        .status(400)
+        .json({ success: false, message: "Failed to retrieve users." });
+    }
   }
 
-  @httpGet("/:id")
+  @httpGet("/:id", authentication, authorization([Roles.Administrator]))
   public getUser(req: Request, res: Response): void {
     const userId = req.params.id;
-    const user = this._userService.getUser(userId);
+    const user = this._userService.getById(userId);
     res.send(user);
   }
 
